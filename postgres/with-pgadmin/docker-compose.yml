@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: 'postgres:latest'
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=50"
+      - "-c"
+      - "shared_buffers=1GB"
+      - "-c"
+      - "effective_cache_size=4GB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "maintenance_work_mem=512MB"
+      - "-c"
+      - "temp_file_limit=10GB"
+      - "-c"
+      - "log_min_duration_statement=200ms"
+    env_file:
+      - .env
+    volumes:
+      - /opt/DockerPostgres:/docker-entrypoint-initdb.d
+      - /opt/DockerPostgres/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:5.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "postgres@mail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - /opt/DockerPostgres/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - postgres
