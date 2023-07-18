@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mongo1:
+    container_name: mongo-rs0-1
+    image: mongo
+    networks:
+      - mongo-network
+    ports:
+      - 27017:27017
+    depends_on:
+      - mongo2
+      - mongo3
+    links:
+      - mongo2
+      - mongo3
+    restart: always
+    volumes:
+      - ./data/rs0-1:/data/db
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+
+  mongo2:
+    container_name: mongo-rs0-2
+    image: mongo
+    networks:
+      - mongo-network
+    ports:
+      - 27018:27017
+    restart: always
+    volumes:
+      - ./data/rs0-2:/data/db
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+  mongo3:
+    container_name: mongo-rs0-3
+    image: mongo
+    networks:
+      - mongo-network
+    ports:
+      - 27019:27017
+    restart: always
+    volumes:
+      - ./data/rs0-3:/data/db
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--replSet",
+        "rs0"
+      ]
+
+networks:
+  mongo-network:
+    driver: bridge
