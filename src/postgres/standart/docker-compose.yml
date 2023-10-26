@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data/initdb:/docker-entrypoint-initdb.d
+      - .:/docker-entrypoint-initdb.d
       - ./data:/var/lib/postgresql/data
     ports:
       - "5432:5432"

@@ -9,6 +9,7 @@ services:
     volumes:
       - ./data:/data
     container_name: minio-standalone
+    restart: always
     environment:
       MINIO_ROOT_USER: miniouser
       MINIO_ROOT_PASSWORD: miniopassword
