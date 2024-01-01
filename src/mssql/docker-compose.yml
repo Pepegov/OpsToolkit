@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  mssql:
+    container_name: mssql
+    restart: always
+    image: 'mcr.microsoft.com/mssql/server:2022-latest'
+    env_file:
+      - .env
+    volumes:
+      - ./data:/var/opt/mssql
+    ports:
+      - 1433:1433

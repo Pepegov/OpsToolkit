@@ -17,6 +17,8 @@ services:
     restart: always
     volumes:
       - ./data/rs0-1:/data/db
+    env_file:
+      - .env
     entrypoint:
       [
         "/usr/bin/mongod",
