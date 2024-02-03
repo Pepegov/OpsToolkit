@@ -8,6 +8,10 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data:/data/db
+      - mongo_db:/data/db
     ports:
       - 27016:27017
+
+volumes:
+  mongo_db:
+

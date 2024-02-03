@@ -2,7 +2,8 @@ version: '3'
 
 services:
   postgres:
-    container_name: postgres_container
+    container_name: postgres
+    restart: always
     image: 'postgres:latest'
     command:
       - "postgres"
@@ -23,12 +24,12 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data/initdb:/docker-entrypoint-initdb.d
-      - ./data:/var/lib/postgresql/data
+      - .:/docker-entrypoint-initdb.d
+      - postgres_db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   pgadmin:
-    container_name: pgadmin_container
+    container_name: pgadmin
     image: dpage/pgadmin4:5.7
     environment:
       PGADMIN_DEFAULT_EMAIL: "postgres@mail.com"
@@ -46,3 +47,6 @@ services:
           memory: 1G
     networks:
       - postgres
+
+volumes:
+  postgres_db:

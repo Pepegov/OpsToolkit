@@ -7,13 +7,12 @@ services:
       - "9000:9000"
       - "9001:9001"
     volumes:
-      - ./data:/data
+      - minio_storage:/data
     container_name: minio-standalone
     restart: always
-    environment:
-      MINIO_ROOT_USER: miniouser
-      MINIO_ROOT_PASSWORD: miniopassword
+    env_file:
+      - .env
     command: server --console-address ":9001" /data
 
 volumes:
-  minio_storage: {}
+  minio_storage:

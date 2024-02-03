@@ -8,6 +8,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./data:/var/opt/mssql
+      - mssql_db:/var/opt/mssql
     ports:
       - 1433:1433
+
+volumes:
+  mssql_db:

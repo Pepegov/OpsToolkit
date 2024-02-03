@@ -1,67 +1,72 @@
 version: '3.8'
 
 services:
-  mongo1:
-    container_name: mongo-rs0-1
+  replica1:
     image: mongo
+    hostname: mongo1
+    container_name: mongo-replica-1
     networks:
-      - mongo-network
+      - network
     ports:
-      - 27017:27017
+      - 27117:27017
+    volumes:
+      - ./keys:/keys
+      - ./scripts:/scripts
+      - replica1_db:/data/db
+      - replica1_config:/data/configdb
     depends_on:
-      - mongo2
-      - mongo3
+      - replica2
+      - replica3
     links:
-      - mongo2
-      - mongo3
+      - replica2
+      - replica3
     restart: always
-    volumes:
-      - ./data/rs0-1:/data/db
-    env_file:
-      - .env
-    entrypoint:
-      [
-        "/usr/bin/mongod",
-        "--bind_ip_all",
-        "--replSet",
-        "rs0"
-      ]
+    entrypoint: [ "/usr/bin/mongod", "--keyFile", "/keys/key", "--auth",  "--bind_ip_all", "--replSet", "mongo_replica" ]
 
-  mongo2:
-    container_name: mongo-rs0-2
+  replica2:
     image: mongo
+    hostname: mongo2
+    container_name: mongo-replica-2
     networks:
-      - mongo-network
+      - network
     ports:
-      - 27018:27017
-    restart: always
+      - 27118:27017
     volumes:
-      - ./data/rs0-2:/data/db
-    entrypoint:
-      [
-        "/usr/bin/mongod",
-        "--bind_ip_all",
-        "--replSet",
-        "rs0"
-      ]
-  mongo3:
-    container_name: mongo-rs0-3
+      - ./keys:/keys
+      - ./scripts:/scripts
+      - replica2_db:/data/db
+      - replica2_config:/data/configdb
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--keyFile", "/keys/key", "--auth",  "--bind_ip_all", "--replSet", "mongo_replica" ]
+    
+
+  replica3:
     image: mongo
+    hostname: mongo3
+    container_name: mongo-replica-3
     networks:
-      - mongo-network
+      - network
     ports:
-      - 27019:27017
-    restart: always
+      - 27119:27017
     volumes:
-      - ./data/rs0-3:/data/db
-    entrypoint:
-      [
-        "/usr/bin/mongod",
-        "--bind_ip_all",
-        "--replSet",
-        "rs0"
-      ]
+      - ./keys:/keys
+      - ./scripts:/scripts
+      - replica3_db:/data/db
+      - replica3_config:/data/configdb
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--keyFile", "/keys/key", "--auth",  "--bind_ip_all", "--replSet", "mongo_replica" ]
+
+
+volumes:
+  replica1_db:
+  replica1_config:
+
+  replica2_db:
+  replica2_config:
+
+  replica3_db:
+  replica3_config:
 
 networks:
-  mongo-network:
+  network:
     driver: bridge

@@ -1,0 +1,31 @@
+rs.status();
+
+db.createUser(
+    {
+        user: 'rootuser', 
+        pwd: 'aldflka23rh2ihf78', 
+        roles: [ 
+            { 
+                role: 'root', 
+                db: 'admin' 
+            } 
+        ]
+    }
+);
+
+db.createUser(
+    {
+        user: "readwriteuser",
+        pwd:  'qweQWE123',  
+        roles: [ 
+            { 
+                role: "readWrite", 
+                db: "test" 
+            },
+            { 
+                role: "read", 
+                db: "reporting" 
+            } 
+        ]
+    }
+);
