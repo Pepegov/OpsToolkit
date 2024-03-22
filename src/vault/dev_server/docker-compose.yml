@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+
+  vault:
+    image: hashicorp/vault
+    container_name: vault-server
+    restart: always
+    networks:
+      - secret_network
+    volumes:
+      - ./config:/vault/config
+      - valut_policies:/vault/policies
+      - valut_data:/vault/data
+    ports:
+      - 8200:8200
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200
+      - VAULT_API_ADDR=http://0.0.0.0:8200
+      - VAULT_ADDRESS=http://0.0.0.0:8200
+    cap_add:
+      - IPC_LOCK
+    command: vault server -config=/vault/config/vault.json
+
+networks:
+  secret_network:
+    name: secret
+    external: true
+volumes:
+  valut_data:
+  valut_policies:

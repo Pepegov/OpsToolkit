@@ -1,0 +1,18 @@
+version: "3"
+services:
+  vault-server:
+    container_name: vault-server
+    restart: always
+    image: hashicorp/vault
+    networks:
+      - secret_network
+    ports:
+      - "8200:8200"
+    env_file:
+      - .env
+    cap_add:
+      - IPC_LOCK
+networks:
+  secret_network:
+    name: secret
+    external: true
