@@ -1,0 +1,14 @@
+version: '3'
+services:
+  coturn_server:
+    image: coturn/coturn:4.6.2
+    container_name: coturn
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf
+      - /etc/letsencrypt/live/<DOMAIN>/cert.pem:/etc/ssl/certs/coturn/cert.pem
+      - /etc/letsencrypt/live/<DOMAIN>/privkey.pem:/etc/ssl/certs/coturn/privkey.pem
+      - coturn_log:var/log/turnserver.log
+volumes:
+  coturn_log:
