@@ -15,5 +15,5 @@ services:
 
 volumes:
   onlyoffice_log:
-  onlyoffice:
+  onlyoffice_data:
   onlyoffice_lib:
