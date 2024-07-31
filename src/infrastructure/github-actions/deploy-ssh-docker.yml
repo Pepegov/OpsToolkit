@@ -1,0 +1,25 @@
+name: 'Deploy for server'
+on:
+    push:
+        branches: [ master ]
+jobs:
+    deploy:
+        name: 'Deploy'
+        runs-on: ubuntu-latest
+        needs: [ build-publish ] #TODO if you need build
+        steps:
+            -   name: "Run deploy on server"
+                uses: appleboy/ssh-action@master
+                with:
+                    host: ${{ secrets.SERVER_HOST }}
+                    username: ${{ secrets.SERVER_USERNAME }}
+                    key: ${{ secrets.SERVER_KEY }}
+                    port: ${{ secrets.SERVER_PORT }}
+                    passphrase : ${{ secrets.PASSPHRASE }}
+                    script: | # you have to create a .docker_password.txt, which will contain the password for the docker registry account
+                        cat ~/.docker_password.txt | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+                        cd ${{ secrets.DEPLOY_DIR }}
+                        docker compose down
+                        docker rmi -f ${{ secrets.REGISTRY_URL }}/pepegov/app:latest || true
+                        docker compose pull
+                        docker compose up -d
