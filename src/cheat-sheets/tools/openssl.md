@@ -77,7 +77,7 @@ The .csr (Certificate Signing Request) file is used to request a digital certifi
 3. **Organizational Unit (OU)**: A division within the organization, such as the IT department.
 4. **City/Locality (L)**: The city or locality where the organization is located.
 5. **State/Province (ST)**: The state or province where the organization is located.
-6. ***Country (C)**: The two-letter country code where the organization is located (e.g., US for the United States).
+6. **Country (C)**: The two-letter country code where the organization is located (e.g., US for the United States).
 7. **Email Address**: The email address for contacting the organization.
 8. **Public Key**: The public key to be included in the certificate and used for encrypting data.
 9. **Signature Algorithm**: The algorithm used for creating the CSR signature (e.g., SHA256 with RSA).
@@ -91,7 +91,7 @@ These fields provide identification for the requesting party and the necessary i
 3. **Organizational Unit (OU)**: IT Department
 4. **City/Locality (L)**: Palo Alto
 5. **State/Province (ST)**: CA
-6. ***Country (C)**: US
+6. **Country (C)**: US
 7. **Email Address**: contact@example.com
 8. **Public Key**: The public key included in the CSR (presented in base64 format in the main data block).
 9. **Signature Algorithm**: SHA256 with RSA
