@@ -1,0 +1,113 @@
+pageInfo:
+  title: System Panel
+  description: Resource Usage Monitoring
+  logo: icons/icon.png
+
+sections:
+- name: CPU Usage
+  icon: fas fa-tachometer
+  widgets:
+  - type: gl-current-cpu
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+
+- name: CPU History
+  icon: fas fa-microchip
+  displayData:
+    cols: 2
+  widgets:
+  - type: gl-cpu-history
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+      limit: 60
+
+- name: CPU Temp
+  icon:
+  widgets:
+  - type: gl-cpu-temp  
+    options:    
+      hostname: http://glances:61208    
+      units: C
+
+- name: System Load
+  icon: fas fa-tasks-alt
+  widgets:
+  - type: gl-system-load
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+
+- name: Memory Usage
+  icon: fas fa-memory
+  widgets:
+  - type: gl-current-mem
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+
+- name: Network Traffic
+  icon: fas fa-ethernet
+  displayData:
+    cols: 2
+  widgets:
+  - type: gl-network-traffic  
+    options:    
+      hostname: http://glances:61208
+      limit: 500
+
+- name: Disk Space
+  icon: fas fa-hdd
+  displayData:
+    rows: 2
+  widgets:
+  - type: gl-disk-space
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+
+- name: Disk IO
+  icon: fas fa-disc-drive
+  displayData:
+    rows: 2
+  widgets:
+  - type: gl-disk-io
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+
+- name: Network Interfaces
+  icon: fas fa-ethernet
+  widgets:
+  - type: gl-network-interfaces
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+      limit: 500
+
+- name: System Alerts
+  icon: fas fa-sensor-alert
+  widgets:
+  - type: gl-alerts
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+
+- name: CPU Cores
+  icon: fas fa-tachometer-fastest
+  displayData:
+    collapsed: true
+    cols: 1
+  widgets:
+  - type: gl-current-cores
+    options:
+      hostname: http://glances:61208
+      useProxy: true
+  
+- name: IP Address
+  icon: fas fa-server
+  widgets:
+  - type: gl-ip-address
+    options:
+      hostname: http://glances:61208

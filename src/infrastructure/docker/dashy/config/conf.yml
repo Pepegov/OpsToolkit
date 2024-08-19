@@ -1,0 +1,111 @@
+---
+pageInfo:
+  title: Home
+  description: General browser startpage
+  logo: icons/icon.png
+pages:
+  - name: "Home"
+    path: "conf.yml"
+  - name: "System Panel"
+    path: "system-panel.yml"
+  - name: "Lab"
+    path: "home-lab.yml"
+
+appConfig:
+  statusCheck: false
+  theme: colorful
+  fontAwesomeKey: c94dc2b452
+  customCss: '.clock p.time { font-size: 3rem !important; }'
+  layout: vertical
+  iconSize: large
+  favicon: icons/icon.png
+  
+# Main content - An array of sections, each containing an array of items
+sections:
+- name: Today
+  icon: far fa-smile-beam
+  displayData:
+    collapsed: false
+    hideForGuests: false
+  widgets:
+  - type: clock
+    options:    
+      format: ru-RU
+      timeZone: Europe/Moscow
+  - type: weather
+    options:
+      apiKey: efdbade728b37086877a5e83442004db
+      city: Moscow
+  - type: public-ip
+
+- name: Productivity
+  icon: far fa-briefcase
+  items:
+  - title: Gmail
+    icon: favicon
+    url: https://mail.google.com
+    tags: [personal, google, email, mail]
+    hotkey: 1
+  - title: Calendar
+    icon: favicon
+    url: https://calendar.google.com/
+    hotkey: 2
+    tags: [personal, google]
+  - title: Asana
+    icon: favicon
+    tags: [productivity, work]
+    hotkey: 3
+    url: https://app.asana.com
+  - title: Notion
+    icon: favicon
+    tags: [productivity, work, md]
+    hotkey: 4
+    url: https://www.notion.so
+
+- name: Dev & cloud
+  icon: far fa-code
+  items:
+  - title: GitHub
+    icon: favicon
+    url: https://github.com/
+    tags: [personal, git]
+    hotkey: 5
+  - title: Gitlab
+    icon: favicon
+    url: https://gitlab.com/
+    tags: [personal, git]
+    hotkey: 6
+  - title: Figma
+    icon: favicon
+    url: https://www.figma.com/
+    hotkey: 7
+    tags: [personal, ui, ux, design]
+  - title: Reg.ru
+    icon: favicon
+    hotkey: 8
+    url: https://www.reg.ru/
+    tags: [personal, domain]
+
+- name: Social & News
+  icon: far fa-thumbs-up
+  items:
+  - title: Discord
+    icon: si-discord
+    url: https://discord.com/channels/
+    hotkey: 9
+    tags: [personal, social, media]
+  - title: YouTube
+    icon: si-youtube
+    url: https://youtube.com/
+    hotkey: 9
+    tags: [personal, social, media, video, stream]
+  - title: Habr
+    icon: favicon
+    url: https://habr.com/
+    tags: [personal, social, news]
+  - title: Crypto Prices
+    icon: fab fa-bitcoin
+    url: https://www.livecoinwatch.com/
+    description: Real-time crypto prices and read-only portfolio
+    provider: Live Coin Watch
+    tags: [personal, prices, news]

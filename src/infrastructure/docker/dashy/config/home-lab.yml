@@ -1,0 +1,110 @@
+pageInfo:
+  title: Home Lab
+  description: Self-hosted apps
+  logo: icons/icon.png
+
+sections:
+- name: Networks
+  displayData:
+    cols: 2
+    rows: 2
+  items:
+  - title: Router
+    icon: fas fa-router
+    description: Home router local address
+    tags: [local, internet]
+    url: http://192.168.1.1
+  - title: Pi-Hole
+    icon: https://wp-cdn.pi-hole.net/wp-content/uploads/2016/12/Vortex-R.png
+    description: DNS settings for ad & tracker blocking
+    url: https://pi-hole.net/
+    tags: [selfhosted, hosted, dns, tracker, blocking]
+    statusCheck: true
+  - title: PiAlert
+    icon: https://wp-cdn.pi-hole.net/wp-content/uploads/2016/12/Vortex-R.png
+    description: Presence monitoring and ARP scanning
+    tags: [selfhosted, hosted, monitoring, metric, dns]
+    statusCheck: true
+  - title: Speed Test
+    description: Local network speed and latency test
+    icon: https://avatars.githubusercontent.com/u/55735736?s=280&v=4
+    url: https://github.com/librespeed/speedtes
+    tags: [selfhosted, hosted, monitoring, metric, internet]
+    statusCheck: true
+  widgets:
+  - type: pi-hole-stats  
+    options:    
+      hostname: http://192.168.130.1    
+      apiKey: xxxxxxxxxxxxxxxxxxxxxxx
+  - type: pi-hole-top-queries  
+    options:    
+      hostname: https://pi-hole.local    
+      apiKey: xxxxxxxxxxxxxxxxxxxxxxx
+  - type: pi-hole-traffic  
+    options:    
+      hostname: https://pi-hole.local    
+      apiKey: xxxxxxxxxxxxxxxxxxxxxxx
+
+- name: System Maintence
+  items:
+  - title: Portainer
+    description: Docker container management
+    icon: https://www.portainer.io/hubfs/portainer-logo-black.svg
+    url: https://www.portainer.io/
+    tags: [selfhosted, hosted, container, docker, manager]
+    statusCheck: true
+  - title: cAdvisor
+    description: Container monitoring
+    url: https://github.com/google/cadvisor
+    tags: [selfhosted, hosted, monitoring, metric]
+    statusCheck: true
+  - title: Prometheus
+    description: System Statistics Aggregation with PromQL
+    statusCheck: true
+    url: https://prometheus.io/
+    icon: https://prometheus.io/assets/favicons/favicon-16x16.png
+    tags: [selfhosted, hosted, monitoring, metric]
+
+- name: Media
+  items:
+  - title: Plex
+    description: Self-Hosted Media Streaming Service
+    icon: https://www.plex.tv/wp-content/themes/plex/assets/img/favicons/favicon.ico
+    url: https://www.plex.tv/
+    tags: [selfhosted, hosted, media, stream, plex]
+    statusCheck: true
+  - title: Tautulli
+    description: Monitoring and statistics for Plex
+    url: https://tautulli.com/
+    icon: https://tautulli.com/images/logo.svg
+    tags: [selfhosted, hosted, monitoring, plex]
+    statusCheck: true
+  - title: Transmission
+    description: Transmission remote for managing torrents 
+    url: https://transmissionbt.com/
+    icon: https://transmissionbt.com/assets/images/icons/16.png
+    tags: [selfhosted, hosted, torrent]
+    statusCheck: true
+    
+- name: Home Control
+  icon: fa-solid fa-house
+  items:
+  - title: NextCloud
+    description: Cloud office suit and collaboration platform
+    icon: https://nextcloud.com/c/uploads/2022/03/favicon.png
+    url: https://nextcloud.homeserver.com 
+    tags: [selfhosted, hosted, home, cloud, file]
+    statusCheck: true
+  - title: Home Assistant
+    description: Smart home control
+    url: https://www.home-assistant.io/
+    icon: https://upload.wikimedia.org/wikipedia/en/thumb/4/49/Home_Assistant_logo_%282023%29.svg/640px-Home_Assistant_logo_%282023%29.svg.png
+    tags: [selfhosted, hosted, home, smart, assistant]
+    statusCheck: true
+  - title: Grafana
+    description: Data visualised on dashboards
+    url: https://grafana.com/
+    icon: https://grafana.com/static/assets/img/fav32.png
+    tags: [selfhosted, hosted, home, grafic, metric, monitoring]
+    statusCheck: true
+

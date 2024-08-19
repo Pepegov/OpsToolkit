@@ -1,0 +1,51 @@
+services:
+  dashy:
+    image: lissy93/dashy:latest
+    networks:
+      - dashy_network
+    container_name: dashy
+    # TODO: Add it if you deleted nginx
+    #ports: 
+    #  - "9040:8080" 
+    volumes:
+      - ./config:/app/user-data
+      - ./config/icons/icon.ico:/app/public/favicon.ico # For Google Chrome
+      - ./config/icons/icon.png:/app/public/web-icons/favicon-32x32.png # For Mozilla Firefox
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  # Glances is needed for "System Panel" page 
+  glances:
+    image: nicolargo/glances:latest
+    networks:
+      - dashy_network
+    container_name: glances
+    restart: unless-stopped
+    privileged: true
+    pid: host
+    environment:
+      - "GLANCES_OPT=--disable-plugin all --enable-plugin cpu,mem,diskio,ip,network,containers,quicklook,load,fs,alert,sensors --disable-webui -w"
+      - PUID=1000
+      - PGID=1000
+    cap_add:
+      - SYS_PTRACE 
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  # Nginx is needed for simplified startup with authorization. If you are already using nginx, then delete this configuration
+  nginx:
+    image: nginx:latest
+    ports:
+      - "9040:80"
+    networks:
+      - dashy_network
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
+    restart: unless-stopped
+
+networks:
+  dashy_network:
+    name: dashy_network
+    driver: bridge
