@@ -1,0 +1,24 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 7.0.x
+    - name: Install dependencies
+      run: dotnet restore src/MyProject.sln
+    - name: Build
+      run: dotnet build src/MyProject.sln --configuration Release --no-restore 
+    - name: Publish MyProject
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:
+          PROJECT_FILE_PATH: src/MyProject.csproj
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}} 
