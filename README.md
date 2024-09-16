@@ -21,11 +21,12 @@ OpsToolkit
 │       │   ├── minio: S3 supported object storage system
 │       │   ├── onlyoffice: Free software office suite and ecosystem of collaborative applications
 │       │   ├── rabbitmq: Open-source message-broker software
+│       │   ├── redis: Open-source cache service
 │       │   ├── vault: Vault secures, stores 
 │       │   └── vpn: Deployment configurations to vpn
 │       │       ├── openvpn: OpenVPN is a virtual private network system
 │       │       └── wireguard: Communication protocol and free and open-source vpn software
-│       ├── github-actions; Templates for builds and deployments
+│       ├── github-actions: Templates for builds and deployments
 │       └── scripts: Everything that is more convenient or necessary to do with scripts
 ```
 
