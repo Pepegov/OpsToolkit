@@ -2,6 +2,7 @@ version: '3.8'
 services:
   cache:
     image: redis:6.2-alpine
+    container_name: redis
     restart: always
     ports:
       - '6379:6379'
@@ -9,5 +10,5 @@ services:
     volumes:
       - redis_storage:/data
 
-  volumes:
-    redis_storage:
+volumes:
+  redis_storage:
