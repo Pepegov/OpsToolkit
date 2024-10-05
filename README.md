@@ -23,6 +23,7 @@ OpsToolkit
 │       │   ├── rabbitmq: Open-source message-broker software
 │       │   ├── redis: Open-source cache service
 │       │   ├── vault: Vault secures, stores 
+│       │   ├── vaultwarden: Alternative implementation of the Bitwarden 
 │       │   └── vpn: Deployment configurations to vpn
 │       │       ├── openvpn: OpenVPN is a virtual private network system
 │       │       └── wireguard: Communication protocol and free and open-source vpn software
