@@ -5,8 +5,8 @@ services:
       - dashy_network
     container_name: dashy
     # TODO: Add it if you deleted nginx
-    #ports: 
-    #  - "9040:8080" 
+    #ports:
+    #  - "9040:8080"
     volumes:
       - ./config:/app/user-data
       - ./config/icons/icon.ico:/app/public/favicon.ico # For Google Chrome
@@ -29,7 +29,7 @@ services:
       - PUID=1000
       - PGID=1000
     cap_add:
-      - SYS_PTRACE 
+      - SYS_PTRACE
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 

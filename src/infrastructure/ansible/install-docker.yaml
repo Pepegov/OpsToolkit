@@ -1,0 +1,58 @@
+---
+- name: Installing and configuring docker
+  hosts: all
+  become: true
+  tasks:
+    - name: Make sure that apt is updated
+      apt:
+        update_cache: yes
+
+    - name: Install dependencies for the Docker repository
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+
+    - name: Create a directory for apt keys
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add a Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add a Docker Repository
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+        update_cache: yes
+
+    - name: Install Docker and the necessary components
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: latest
+
+    - name: Make sure that Docker is enabled and running
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Check the Docker status
+      command: systemctl is-active docker
+      register: docker_status
+      changed_when: false
+
+    - name: Display the Docker status
+      debug:
+        msg: "Docker service is {{ docker_status.stdout }}."
