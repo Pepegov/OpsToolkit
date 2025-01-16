@@ -23,9 +23,10 @@
         mode: '0755'
 
     - name: Add a Docker GPG key
-      apt_key:
+      get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+        dest: /etc/apt/keyrings/docker.asc
+        mode: '0644'
 
     - name: Add a Docker Repository
       apt_repository:
