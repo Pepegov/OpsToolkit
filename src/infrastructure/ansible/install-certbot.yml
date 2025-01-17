@@ -1,0 +1,46 @@
+---
+- name: Install and configure Certbot
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Ensure snapd is installed
+      apt:
+        name: snapd
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure snapd is installed (RedHat-based)
+      yum:
+        name: snapd
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Enable and start snapd service
+      systemd:
+        name: snapd
+        state: started
+        enabled: yes
+
+    - name: Remove existing Certbot packages (Debian-based)
+      apt:
+        name: certbot
+        state: absent
+      when: ansible_os_family == "Debian"
+
+    - name: Remove existing Certbot packages (RedHat-based)
+      yum:
+        name: certbot
+        state: absent
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Certbot via snap
+      command: snap install --classic certbot
+      args:
+        creates: /snap/bin/certbot
+
+    - name: Ensure certbot command is available
+      file:
+        src: /snap/bin/certbot
+        dest: /usr/bin/certbot
+        state: link
