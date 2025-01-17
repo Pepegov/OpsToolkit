@@ -1,0 +1,60 @@
+---
+- name: Setup UFW
+  hosts: all
+  become: yes
+
+  vars:
+    ufw_rules:
+      - { rule: "allow", port: 22, proto: "tcp" }  # SSH
+      - { rule: "allow", port: 80, proto: "tcp" }  # HTTP
+      - { rule: "allow", port: 443, proto: "tcp" } # HTTPS
+    whitelist_ips:
+      - "127.0.0.1"
+
+  tasks:
+    - name: Prompt for confirmation to apply IP restrictions
+      pause:
+        prompt: "Do you want to apply IP whitelist restrictions? (yes/no)"
+      register: ip_restriction_confirmation
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install UFW
+      apt:
+        name: ufw
+        state: present
+
+    - name: Allow default SSH traffic to prevent lockout
+      ufw:
+        rule: allow
+        port: 22
+        proto: tcp
+
+    - name: Add UFW rules from variable
+      ufw:
+        rule: "{{ item.rule }}"
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      loop: "{{ ufw_rules }}"
+
+    - name: Apply IP whitelist restrictions
+      ufw:
+        rule: allow
+        from_ip: "{{ item }}"
+      loop: "{{ whitelist_ips }}"
+      when: ip_restriction_confirmation.user_input | lower == 'yes'
+
+    - name: Enable UFW
+      ufw:
+        state: enabled
+        logging: on
+
+    - name: Ensure UFW is enabled and active
+      command: ufw status
+      register: ufw_status
+
+    - name: Debug UFW status
+      debug:
+        msg: "{{ ufw_status.stdout }}"
