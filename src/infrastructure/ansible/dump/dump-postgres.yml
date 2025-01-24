@@ -39,7 +39,7 @@
     - name: Fetch the dump file to local machine
       ansible.builtin.fetch:
         src: "{{ backup_dir }}/all_databases.sql"
-        dest: "{{ local_backup_dir }}/postgres_all_databases_{{ ansible_date_time.iso8601_basic }}.sql"
+        dest: "{{ local_backup_dir }}/{{ inventory_hostname }}_postgres_all_databases_{{ ansible_date_time.iso8601_basic }}.sql"
         flat: yes
 
     - name: Clean up remote dump file
