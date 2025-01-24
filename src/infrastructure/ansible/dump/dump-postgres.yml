@@ -1,0 +1,48 @@
+---
+- name: Dump all PostgreSQL databases
+  hosts: all
+  become: true
+  vars_prompt:
+    - name: "postgres_user"
+      prompt: "Enter PostgreSQL username"
+      private: no
+
+    - name: "postgres_password"
+      prompt: "Enter PostgreSQL password"
+      private: yes
+  vars:
+    backup_dir: "/tmp/pg_dumps" 
+    local_backup_dir: "./backups" 
+
+  tasks:
+    - name: Ensure PostgreSQL client is installed
+      ansible.builtin.apt:
+        name: postgresql-client
+        state: present
+        update_cache: yes
+
+    - name: Ensure backup directory exists on remote
+      ansible.builtin.file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Create PostgreSQL dump of all databases
+      ansible.builtin.shell:
+        cmd: >
+          pg_dumpall -U {{ postgres_user }} -h localhost > {{ backup_dir }}/all_databases.sql
+      environment:
+        PGPASSWORD: "{{ postgres_password }}"
+      register: dump_result
+      failed_when: dump_result.rc != 0
+
+    - name: Fetch the dump file to local machine
+      ansible.builtin.fetch:
+        src: "{{ backup_dir }}/all_databases.sql"
+        dest: "{{ local_backup_dir }}/postgres_all_databases_{{ ansible_date_time.iso8601_basic }}.sql"
+        flat: yes
+
+    - name: Clean up remote dump file
+      ansible.builtin.file:
+        path: "{{ backup_dir }}/all_databases.sql"
+        state: absent
