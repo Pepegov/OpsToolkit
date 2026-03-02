@@ -1,0 +1,84 @@
+---
+- name: Basic SSH security + change port to 7022
+  hosts: all
+  become: yes
+  vars:
+    ssh_port: 7022
+    # SSH service name depending on distribution (using ansible_facts)
+    ssh_service_name: "{{ 'sshd' if ansible_facts['os_family'] == 'RedHat' else 'ssh' }}"
+
+  tasks:
+    - name: Ensure openssh-server package is installed
+      package:
+        name: openssh-server
+        state: present
+
+    - name: Set custom SSH port
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?Port\s+'
+        line: "Port {{ ssh_port }}"
+        backup: yes
+      notify: restart ssh
+
+    - name: Disable direct root login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+        backup: yes
+      notify: restart ssh
+
+    - name: Disable password authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        backup: yes
+      notify: restart ssh
+
+    - name: Disable empty passwords
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitEmptyPasswords'
+        line: 'PermitEmptyPasswords no'
+        backup: yes
+      notify: restart ssh
+
+    # ----- Firewall configuration (optional) -----
+    - name: Open port in firewalld (if active)
+      firewalld:
+        port: "{{ ssh_port }}/tcp"
+        permanent: yes
+        immediate: yes
+        state: enabled
+      when:
+        - ansible_facts.services['firewalld'] is defined
+        - ansible_facts.services['firewalld'].state == 'running'
+      ignore_errors: yes
+
+    - name: Open port in ufw (if used)
+      ufw:
+        rule: allow
+        port: "{{ ssh_port }}"
+        proto: tcp
+      when:
+        - ansible_facts.services['ufw'] is defined
+        - ansible_facts.services['ufw'].state == 'running'
+      ignore_errors: yes
+
+  handlers:
+    - name: restart ssh
+      shell: |
+        set -e
+        sshd -t
+        systemctl restart {{ ssh_service_name }}
+      register: ssh_restart_result
+      changed_when: ssh_restart_result.rc == 0
+      failed_when: ssh_restart_result.rc != 0
+
+    - name: warn ssh restart failed
+      debug:
+        msg: "Error during SSH configuration check or restart. Configuration may be invalid. Check /etc/ssh/sshd_config manually."
+      when: ssh_restart_result is failed or ssh_restart_result.rc != 0
+      listen: restart ssh

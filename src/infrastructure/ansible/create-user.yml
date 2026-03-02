@@ -1,0 +1,54 @@
+---
+- name: Create user with sudo access and add SSH key
+  hosts: all
+  become: yes
+  vars_prompt:
+    - name: username
+      prompt: "Enter the username to create"
+      private: no
+    - name: ssh_public_key
+      prompt: "Enter the public SSH key for the user"
+      private: no
+
+  tasks:
+    - name: Ensure sudo package is installed (for Debian/Ubuntu)
+      apt:
+        name: sudo
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure sudo group exists (for Debian/Ubuntu)
+      group:
+        name: sudo
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure wheel group exists (for RedHat/CentOS)
+      group:
+        name: wheel
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Create user and add to appropriate sudo group
+      user:
+        name: "{{ username }}"
+        groups: "{{ 'sudo' if ansible_os_family == 'Debian' else 'wheel' }}"
+        append: yes
+        state: present
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Add public SSH key to user's authorized_keys
+      authorized_key:
+        user: "{{ username }}"
+        key: "{{ ssh_public_key }}"
+        state: present
+
+    - name: Allow user to sudo without password
+      copy:
+        dest: "/etc/sudoers.d/{{ username }}"
+        content: "{{ username }} ALL=(ALL) NOPASSWD:ALL"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: 'visudo -cf %s'

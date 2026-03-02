@@ -2,3 +2,7 @@
 **data/
 **data
 **/data
+
+.ansible
+**/.ansible
+.ansible/**

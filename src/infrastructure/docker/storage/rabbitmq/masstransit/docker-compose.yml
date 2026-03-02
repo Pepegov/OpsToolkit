@@ -1,7 +1,6 @@
-version: "2.1"
 services:
   rabbitmq:
-    image: masstransit/rabbitmq:latest
+    image: masstransit/rabbitmq:3.11.18
     tty: true
     hostname: rabbitmq
     container_name: rabbitmq-masstransit
@@ -13,6 +12,12 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
+      - 1883:1883
+    command: >
+      sh -c "
+        rabbitmq-plugins enable --offline rabbitmq_mqtt &&
+        rabbitmq-server
+      "
 
 volumes:
   rabbitmq-masstransit_db:

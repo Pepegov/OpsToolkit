@@ -10,6 +10,10 @@
       - { rule: "allow", port: 443, proto: "tcp" } # HTTPS
     whitelist_ips:
       - "127.0.0.1"
+      - "192.168.0.0/16"
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+
 
   tasks:
     - name: Prompt for confirmation to apply IP restrictions
