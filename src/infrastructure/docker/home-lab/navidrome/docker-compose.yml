@@ -2,6 +2,7 @@ services:
   navidrome:
     image: deluan/navidrome:latest
     user: 1000:100 # should be owner of volumes
+    container_name: navidrome
     ports:
       - "9090:4533"
     restart: unless-stopped

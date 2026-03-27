@@ -1,10 +1,25 @@
-version: '3'
-
 services:
+  # Uncomment if you need pgadmin
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4:5.7
+  #   env_file:
+  #     - .env
+  #   # volumes:
+  #   #   - /data/pgadmin:/var/lib/pgadmin
+  #   ports:
+  #     - "5050:80"
+  #   restart: unless-stopped
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: 1G
+
   postgres:
     container_name: postgres
     restart: always
-    image: 'postgres:latest'
+    image: 'postgres:16'
     command:
       - "postgres"
       - "-c"
